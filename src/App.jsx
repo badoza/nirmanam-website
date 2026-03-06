@@ -1,9 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Menu, X, Home, Building2, Hammer, KeySquare, 
-  ShieldCheck, Clock, Eye, ChevronRight, Phone, 
-  Mail, MapPin, Instagram, ArrowUpRight, Newspaper
-} from 'lucide-react';
+
+// Inline SVG Icons to replace external lucide-react dependency
+const Icon = ({ children, size = 24, color = "currentColor", className = "", style = {} }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>{children}</svg>
+);
+const MenuIcon = (p) => <Icon {...p}><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></Icon>;
+const XIcon = (p) => <Icon {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></Icon>;
+const HomeIcon = (p) => <Icon {...p}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></Icon>;
+const BuildingIcon = (p) => <Icon {...p}><path d="M4 10v12h16V10M4 10L12 3l8 7M10 22v-8h4v8"/></Icon>;
+const HammerIcon = (p) => <Icon {...p}><path d="M15 4l-4 4 3 3 4-4-3-3M14 7l-9 9a2 2 0 0 0 3 3l9-9"/></Icon>;
+const KeyIcon = (p) => <Icon {...p}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="10" cy="10" r="3"/><path d="M12 12l4 4v-2l2-2"/></Icon>;
+const ShieldIcon = (p) => <Icon {...p}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></Icon>;
+const ClockIcon = (p) => <Icon {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></Icon>;
+const EyeIcon = (p) => <Icon {...p}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></Icon>;
+const ChevronRightIcon = (p) => <Icon {...p}><polyline points="9 18 15 12 9 6"/></Icon>;
+const PhoneIcon = (p) => <Icon {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></Icon>;
+const MailIcon = (p) => <Icon {...p}><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></Icon>;
+const MapPinIcon = (p) => <Icon {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></Icon>;
+const InstaIcon = (p) => <Icon {...p}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></Icon>;
+const ArrowUpRightIcon = (p) => <Icon {...p}><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></Icon>;
+const NewspaperIcon = (p) => <Icon {...p}><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></Icon>;
 
 // Custom Colors matching the logo
 const COLORS = {
@@ -76,16 +92,16 @@ export default function App() {
   };
 
   const services = [
-    { title: 'Residential Construction', icon: <Home size={32} />, desc: 'Building dream homes with unmatched quality and modern aesthetics.' },
-    { title: 'Commercial Projects', icon: <Building2 size={32} />, desc: 'State-of-the-art commercial spaces designed for efficiency and growth.' },
-    { title: 'Renovation', icon: <Hammer size={32} />, desc: 'Transforming existing spaces into contemporary masterpieces.' },
-    { title: 'Turnkey Solutions', icon: <KeySquare size={32} />, desc: 'End-to-end project management from concept to final handover.' }
+    { title: 'Residential Construction', icon: <HomeIcon size={32} />, desc: 'Building dream homes with unmatched quality and modern aesthetics.' },
+    { title: 'Commercial Projects', icon: <BuildingIcon size={32} />, desc: 'State-of-the-art commercial spaces designed for efficiency and growth.' },
+    { title: 'Renovation', icon: <HammerIcon size={32} />, desc: 'Transforming existing spaces into contemporary masterpieces.' },
+    { title: 'Turnkey Solutions', icon: <KeyIcon size={32} />, desc: 'End-to-end project management from concept to final handover.' }
   ];
 
   const values = [
-    { title: 'Quality', icon: <ShieldCheck size={40} color={COLORS.gold} />, desc: 'Premium materials and superior craftsmanship.' },
-    { title: 'Transparency', icon: <Eye size={40} color={COLORS.gold} />, desc: 'Clear communication and honest pricing every step of the way.' },
-    { title: 'Timely Delivery', icon: <Clock size={40} color={COLORS.gold} />, desc: 'Strict adherence to schedules without compromising quality.' }
+    { title: 'Quality', icon: <ShieldIcon size={40} color={COLORS.gold} />, desc: 'Premium materials and superior craftsmanship.' },
+    { title: 'Transparency', icon: <EyeIcon size={40} color={COLORS.gold} />, desc: 'Clear communication and honest pricing every step of the way.' },
+    { title: 'Timely Delivery', icon: <ClockIcon size={40} color={COLORS.gold} />, desc: 'Strict adherence to schedules without compromising quality.' }
   ];
 
   return (
@@ -123,7 +139,7 @@ export default function App() {
             className="md:hidden text-white p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+            {isMobileMenuOpen ? <XIcon size={28} /> : <MenuIcon size={28} />}
           </button>
         </div>
 
@@ -139,7 +155,7 @@ export default function App() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item}
-                <ChevronRight size={16} style={{ color: COLORS.gold }} />
+                <ChevronRightIcon size={16} style={{ color: COLORS.gold }} />
               </a>
             ))}
           </div>
@@ -177,7 +193,7 @@ export default function App() {
                target="_blank" rel="noreferrer"
                className="px-8 py-4 rounded font-bold text-white border-2 flex items-center justify-center gap-2 hover:bg-white/10 transition-colors"
                style={{ borderColor: 'rgba(255,255,255,0.3)' }}>
-              <Instagram size={20} /> Follow on Instagram
+              <InstaIcon size={20} /> Follow on Instagram
             </a>
           </div>
         </div>
@@ -235,7 +251,7 @@ export default function App() {
                 
                 <div className="mt-6 flex items-center text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity"
                      style={{ color: COLORS.gold }}>
-                  Learn More <ArrowUpRight size={16} className="ml-1" />
+                  Learn More <ArrowUpRightIcon size={16} className="ml-1" />
                 </div>
               </div>
             ))}
@@ -285,11 +301,11 @@ export default function App() {
           <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-200">
             <div className="flex justify-between items-center p-4 border-b border-gray-100" style={{ backgroundColor: COLORS.primary }}>
               <span className="font-bold text-white flex items-center gap-2">
-                <Newspaper size={18} style={{ color: COLORS.gold }} />
+                <NewspaperIcon size={18} style={{ color: COLORS.gold }} />
                 {selectedNews.author || "ಕರ್ನಾಟಕ ಟೈಮ್ಸ್"}
               </span>
               <button onClick={closeNews} className="text-white hover:text-[#C5A059] p-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
-                <X size={20} />
+                <XIcon size={20} />
               </button>
             </div>
             
@@ -306,7 +322,7 @@ export default function App() {
                 <a href={selectedNews.link} target="_blank" rel="noreferrer" 
                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white transition-opacity hover:opacity-90 shadow-md"
                    style={{ backgroundColor: COLORS.gold }}>
-                  ಮೂಲ ಲೇಖನ ಓದಿ (Read Full Article) <ArrowUpRight size={16} />
+                  ಮೂಲ ಲೇಖನ ಓದಿ (Read Full Article) <ArrowUpRightIcon size={16} />
                 </a>
               </div>
             </div>
@@ -333,7 +349,7 @@ export default function App() {
               </p>
               <a href="https://www.instagram.com/nirmanam.constructions?igsh=ZTdhZDdwb2k2cjVn" target="_blank" rel="noreferrer"
                  className="inline-flex items-center gap-2 text-white hover:text-[#C5A059] transition-colors bg-white/5 px-4 py-2 rounded-lg border border-white/10">
-                <Instagram size={20} /> @nirmanam.constructions
+                <InstaIcon size={20} /> @nirmanam.constructions
               </a>
             </div>
 
@@ -351,15 +367,15 @@ export default function App() {
               <h4 className="text-lg font-bold mb-6 tracking-wide uppercase" style={{ color: COLORS.gold }}>Contact Info</h4>
               <ul className="space-y-4 text-gray-400">
                 <li className="flex items-start gap-3">
-                  <Phone size={20} className="mt-1 flex-shrink-0" style={{ color: COLORS.gold }} />
+                  <PhoneIcon size={20} className="mt-1 flex-shrink-0" style={{ color: COLORS.gold }} />
                   <span>+91 98765 43210 <br/> +91 98765 01234</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <Mail size={20} className="flex-shrink-0" style={{ color: COLORS.gold }} />
+                  <MailIcon size={20} className="flex-shrink-0" style={{ color: COLORS.gold }} />
                   <span>info@nirmanamconstructions.com</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <MapPin size={24} className="mt-1 flex-shrink-0" style={{ color: COLORS.gold }} />
+                  <MapPinIcon size={24} className="mt-1 flex-shrink-0" style={{ color: COLORS.gold }} />
                   <span>123, Builders Boulevard, Main Road, Karnataka, India</span>
                 </li>
               </ul>
