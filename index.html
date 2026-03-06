@@ -1,14 +1,535 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nirmanam Design & Constructions</title>
-    <!-- Tailwind CSS Script -->
+    
+    <!-- Google Fonts for Classy Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#11223F',
+                        gold: '#C5A059',
+                        dark: '#0A1526',
+                        light: '#F8F9FA'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for Mobile App Feel */
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Hide scrollbar for horizontal scrolling feeds */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Glassmorphism Navbar */
+        .nav-scrolled {
+            background-color: rgba(17, 34, 63, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Menu Animation */
+        #mobileMenu {
+            transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobileMenu.active {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        /* News Modal Animation */
+        #reader {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            transform: translateY(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #reader.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Image Zoom on Hover */
+        .img-hover-zoom {
+            transition: transform 0.5s ease;
+        }
+        .group:hover .img-hover-zoom {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 antialiased selection:bg-gold selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-gradient-to-b from-black/70 to-transparent text-white">
+        <div class="container mx-auto px-5 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="flex flex-col z-50">
+                <h1 class="text-2xl md:text-3xl font-serif tracking-widest font-bold text-gold">NIRMANAM</h1>
+                <p class="text-[9px] md:text-[11px] tracking-[0.25em] text-white/90 mt-1 border-t border-white/30 pt-1 uppercase">
+                    Design & Constructions
+                </p>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 items-center text-sm font-semibold tracking-wider">
+                <a href="#home" class="hover:text-gold transition-colors">HOME</a>
+                <a href="#about" class="hover:text-gold transition-colors">ABOUT</a>
+                <a href="#services" class="hover:text-gold transition-colors">SERVICES</a>
+                <a href="#news" class="hover:text-gold transition-colors">UPDATES</a>
+                <a href="#contact" class="px-6 py-2.5 border border-gold text-gold rounded-full hover:bg-gold hover:text-white transition-all">
+                    CONTACT US
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="menuBtn" class="md:hidden text-white text-2xl z-50 p-2 focus:outline-none">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobileMenu" class="absolute top-full left-0 w-full bg-primary border-t border-white/10 shadow-2xl md:hidden flex flex-col">
+            <a href="#home" class="px-6 py-4 text-white font-medium border-b border-white/5 flex justify-between items-center active:bg-white/10 mobile-link">
+                Home <i class="fa-solid fa-chevron-right text-gold text-xs"></i>
+            </a>
+            <a href="#about" class="px-6 py-4 text-white font-medium border-b border-white/5 flex justify-between items-center active:bg-white/10 mobile-link">
+                About Us <i class="fa-solid fa-chevron-right text-gold text-xs"></i>
+            </a>
+            <a href="#services" class="px-6 py-4 text-white font-medium border-b border-white/5 flex justify-between items-center active:bg-white/10 mobile-link">
+                Our Services <i class="fa-solid fa-chevron-right text-gold text-xs"></i>
+            </a>
+            <a href="#news" class="px-6 py-4 text-white font-medium border-b border-white/5 flex justify-between items-center active:bg-white/10 mobile-link">
+                Local Updates <i class="fa-solid fa-chevron-right text-gold text-xs"></i>
+            </a>
+            <a href="#contact" class="px-6 py-4 text-gold font-bold flex justify-between items-center active:bg-white/10 mobile-link">
+                Contact Us <i class="fa-solid fa-phone text-xs"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop" alt="Luxury Construction" class="w-full h-full object-cover scale-105 animate-[pulse_20s_ease-in-out_infinite_alternate]" />
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/60"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-5 max-w-4xl mx-auto mt-12 md:mt-20 w-full">
+            <span class="inline-block mb-4 md:mb-6 px-4 py-1.5 border rounded-full text-xs md:text-sm font-bold tracking-widest text-gold border-gold uppercase backdrop-blur-sm bg-black/20">
+                Building Your Vision
+            </span>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+                Excellence in <br/> <span class="text-gold italic">Design & Construction</span>
+            </h2>
+            <p class="text-base md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
+                We deliver premium residential, commercial, renovation, and turnkey projects focusing on uncompromised quality, transparency, and timely delivery.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
+                <a href="#services" class="px-8 py-4 rounded bg-gold text-white font-bold shadow-lg shadow-gold/20 flex items-center justify-center gap-2 hover:bg-yellow-600 transition-colors active:scale-95">
+                    Explore Services <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="https://www.instagram.com/nirmanam.constructions?igsh=ZTdhZDdwb2k2cjVn" target="_blank" class="px-8 py-4 rounded border border-white/30 text-white font-bold backdrop-blur-md flex items-center justify-center gap-2 hover:bg-white/10 transition-colors active:scale-95">
+                    <i class="fa-brands fa-instagram text-xl"></i> Our Portfolio
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10 hidden md:block">
+            <a href="#about" class="text-white/50 hover:text-gold transition-colors">
+                <i class="fa-solid fa-arrow-down text-xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Core Values Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-5">
+            <div class="text-center mb-16">
+                <h3 class="text-sm font-bold tracking-widest text-gold uppercase mb-2">Why Choose Us</h3>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-primary">The Nirmanam Standard</h2>
+                <div class="w-16 h-1 bg-gold mx-auto mt-6 rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+                <!-- Value 1 -->
+                <div class="p-8 rounded-2xl bg-light border border-gray-100 shadow-sm hover:shadow-xl transition-all text-center group">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-md text-gold text-3xl group-hover:scale-110 group-hover:bg-gold group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-primary font-serif">Unmatched Quality</h4>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">We use premium materials and superior craftsmanship to ensure structures that stand the test of time.</p>
+                </div>
+                <!-- Value 2 -->
+                <div class="p-8 rounded-2xl bg-light border border-gray-100 shadow-sm hover:shadow-xl transition-all text-center group">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-md text-gold text-3xl group-hover:scale-110 group-hover:bg-gold group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-handshake"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-primary font-serif">100% Transparency</h4>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">Clear communication, detailed contracts, and honest pricing every single step of the way.</p>
+                </div>
+                <!-- Value 3 -->
+                <div class="p-8 rounded-2xl bg-light border border-gray-100 shadow-sm hover:shadow-xl transition-all text-center group">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-md text-gold text-3xl group-hover:scale-110 group-hover:bg-gold group-hover:text-white transition-all duration-300">
+                        <i class="fa-regular fa-clock"></i>
+                    </div>
+                    <h4 class="text-xl font-bold mb-3 text-primary font-serif">Timely Delivery</h4>
+                    <p class="text-gray-600 leading-relaxed text-sm md:text-base">Strict adherence to project schedules without ever compromising on the quality of work.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-primary text-white">
+        <div class="container mx-auto px-5">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+                <div>
+                    <h3 class="text-sm font-bold tracking-widest text-gold uppercase mb-2">Our Expertise</h3>
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold">Comprehensive Solutions</h2>
+                    <div class="w-16 h-1 bg-gold mt-6 rounded-full"></div>
+                </div>
+                <p class="text-gray-300 max-w-md md:text-right font-light">
+                    From conceptual design to final handover, we provide end-to-end services tailored to your unique requirements.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all cursor-pointer relative overflow-hidden">
+                    <i class="fa-solid fa-house text-4xl text-gold mb-6 opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:-translate-y-1"></i>
+                    <h4 class="text-xl font-bold mb-3 font-serif">Residential Construction</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Building custom luxury villas, apartments, and dream homes with modern aesthetics.</p>
+                    <div class="absolute bottom-8 right-8 text-gold opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all cursor-pointer relative overflow-hidden">
+                    <i class="fa-solid fa-city text-4xl text-gold mb-6 opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:-translate-y-1"></i>
+                    <h4 class="text-xl font-bold mb-3 font-serif">Commercial Projects</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">State-of-the-art office spaces, retail outlets, and commercial buildings built for growth.</p>
+                    <div class="absolute bottom-8 right-8 text-gold opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all cursor-pointer relative overflow-hidden">
+                    <i class="fa-solid fa-hammer text-4xl text-gold mb-6 opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:-translate-y-1"></i>
+                    <h4 class="text-xl font-bold mb-3 font-serif">Renovation & Interior</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Transforming existing spaces into contemporary, highly functional masterpieces.</p>
+                    <div class="absolute bottom-8 right-8 text-gold opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all cursor-pointer relative overflow-hidden">
+                    <i class="fa-solid fa-key text-4xl text-gold mb-6 opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:-translate-y-1"></i>
+                    <h4 class="text-xl font-bold mb-3 font-serif">Turnkey Solutions</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Hassle-free end-to-end project management from architectural concept to final handover.</p>
+                    <div class="absolute bottom-8 right-8 text-gold opacity-0 group-hover:opacity-100 transition-all transform translate-x-4 group-hover:translate-x-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dynamic News Feed Section -->
+    <section id="news" class="py-20 bg-light">
+        <div class="container mx-auto px-0 md:px-5">
+            <div class="text-center mb-12 px-5">
+                <h3 class="text-sm font-bold tracking-widest text-gold uppercase mb-2">Live Updates</h3>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-primary">Karnataka News Feed</h2>
+                <div class="w-16 h-1 bg-gold mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <!-- News Container (Horizontal Scroll on Mobile) -->
+            <div id="newsFeed" class="flex overflow-x-auto gap-5 pb-10 pt-4 px-5 snap-x no-scrollbar">
+                <!-- Loader placeholder -->
+                <div class="w-full flex justify-center py-10">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-gold"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News Reader Full Screen Modal -->
+    <div id="reader" class="fixed inset-0 z-[100] bg-white flex flex-col">
+        <!-- Modal Header -->
+        <div class="bg-primary text-white p-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-newspaper text-gold text-xl"></i>
+                <span id="sourceInfo" class="font-bold text-sm tracking-wide">Karnataka News</span>
+            </div>
+            <button onclick="closeNews()" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors active:scale-90">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Modal Content -->
+        <div class="flex-1 overflow-y-auto p-5 md:p-8 bg-gray-50">
+            <div id="readerContent" class="max-w-3xl mx-auto bg-white p-6 rounded-2xl shadow-sm border border-gray-100 prose prose-sm md:prose-base max-w-none">
+                <!-- Dynamic Content goes here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-dark text-white pt-20 pb-10 border-t border-white/10 relative overflow-hidden">
+        <!-- BG decorative element -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-gold opacity-5 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+
+        <div class="container mx-auto px-5 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="lg:col-span-2">
+                    <div class="flex flex-col mb-6">
+                        <h1 class="text-3xl font-serif tracking-widest font-bold text-gold">NIRMANAM</h1>
+                        <p class="text-[10px] tracking-[0.25em] text-white/50 mt-1 uppercase">Design & Constructions</p>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed max-w-md mb-8 font-light text-sm md:text-base">
+                        Building trust through quality, transparency, and timely delivery. We turn your vision into structurally sound and aesthetically pleasing realities.
+                    </p>
+                    <a href="https://www.instagram.com/nirmanam.constructions?igsh=ZTdhZDdwb2k2cjVn" target="_blank" class="inline-flex items-center gap-3 text-white hover:text-gold transition-colors bg-white/5 px-5 py-3 rounded-xl border border-white/10 w-max active:bg-white/10">
+                        <i class="fa-brands fa-instagram text-2xl text-gold"></i> 
+                        <span class="font-medium tracking-wide">@nirmanam.constructions</span>
+                    </a>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white font-serif tracking-wide border-b border-white/10 pb-3 inline-block">Quick Links</h4>
+                    <ul class="space-y-4 text-gray-400 font-light">
+                        <li><a href="#home" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold/50 text-xs"></i> Home</a></li>
+                        <li><a href="#about" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold/50 text-xs"></i> About Us</a></li>
+                        <li><a href="#services" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold/50 text-xs"></i> Services</a></li>
+                        <li><a href="#news" class="hover:text-gold transition-colors flex items-center gap-2"><i class="fa-solid fa-angle-right text-gold/50 text-xs"></i> Live Updates</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-lg font-bold mb-6 text-white font-serif tracking-wide border-b border-white/10 pb-3 inline-block">Contact Info</h4>
+                    <ul class="space-y-5 text-gray-400 font-light text-sm">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-gold border border-white/10">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="flex flex-col pt-1">
+                                <a href="tel:+919876543210" class="hover:text-gold transition-colors">+91 98765 43210</a>
+                                <a href="tel:+919876501234" class="hover:text-gold transition-colors mt-1">+91 98765 01234</a>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-gold border border-white/10">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <a href="mailto:info@nirmanamconstructions.com" class="hover:text-gold transition-colors pt-1">info@nirmanam.com</a>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center shrink-0 text-gold border border-white/10">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <span class="pt-1 leading-relaxed">123, Builders Boulevard, Main Road, Karnataka, India</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 tracking-wide">
+                <p>&copy; 2024 Nirmanam Design & Constructions. All rights reserved.</p>
+                <p class="mt-3 md:mt-0 flex items-center gap-1">Designed with <i class="fa-solid fa-heart text-gold mx-1"></i> for Mobile & Web</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- 1. UI Interactions --- //
+        
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled', 'py-3');
+                navbar.classList.remove('py-4', 'bg-gradient-to-b', 'from-black/70');
+            } else {
+                navbar.classList.remove('nav-scrolled', 'py-3');
+                navbar.classList.add('py-4', 'bg-gradient-to-b', 'from-black/70');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIcon = menuBtn.querySelector('i');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('active');
+            if(mobileMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            }
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', () => {
+            if(mobileMenu.classList.contains('active')) toggleMenu();
+        }));
+
+        // --- 2. Live News Feed Logic (Adapted from your script) --- //
+        
+        const FEEDS = [
+            'https://kannada.oneindia.com/rss/feeds/kannada-news-fb.xml',
+            'https://www.prajavani.net/rssfeeds/karnataka.xml',
+            'https://kannada.news18.com/rss/state.xml'
+        ];
+
+        async function fetchLiveNews() {
+            const proxy = "https://api.rss2json.com/v1/api.json?rss_url=";
+            let items = [];
+
+            for (let url of FEEDS) {
+                try {
+                    const res = await fetch(proxy + encodeURIComponent(url));
+                    const data = await res.json();
+                    if (data.status === 'ok') items = [...items, ...data.items];
+                } catch (e) { 
+                    console.log("Source Error fetching RSS"); 
+                }
+            }
+
+            // Sort by newest
+            items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+            renderNews(items.slice(0, 15)); // Show top 15 news for better performance
+        }
+
+        function renderNews(news) {
+            const feed = document.getElementById('newsFeed');
+            if(news.length === 0) {
+                feed.innerHTML = `<p class="text-gray-500 italic w-full text-center py-10">Unable to load news right now.</p>`;
+                return;
+            }
+
+            feed.innerHTML = news.map(item => {
+                // Determine image source securely
+                let img = 'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?q=80&w=800&auto=format&fit=crop';
+                if (item.thumbnail) img = item.thumbnail;
+                else if (item.enclosure && item.enclosure.link) img = item.enclosure.link;
+                
+                // Clean description for preview
+                let descText = item.description ? item.description.replace(/(<([^>]+)>)/gi, "").substring(0, 80) + '...' : '';
+
+                // Encode item data safely to pass to onclick
+                const itemData = encodeURIComponent(JSON.stringify({...item, image: img}));
+
+                return `
+                    <div class="snap-start shrink-0 w-[85vw] md:w-80 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer group active:scale-[0.98] transition-all" 
+                         onclick="openNews('${itemData}')">
+                        <div class="h-48 w-full overflow-hidden relative">
+                            <img src="${img}" alt="News Image" onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800'" class="w-full h-full object-cover img-hover-zoom">
+                            <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded">
+                                ${item.author || "News Update"}
+                            </div>
+                        </div>
+                        <div class="p-5 flex flex-col h-[140px]">
+                            <h4 class="text-sm font-bold text-primary line-clamp-2 leading-snug group-hover:text-gold transition-colors font-serif">${item.title}</h4>
+                            <p class="text-xs text-gray-500 mt-2 line-clamp-2">${descText}</p>
+                            <div class="mt-auto pt-3 flex items-center justify-between text-[11px] text-gray-400 font-bold uppercase tracking-wider">
+                                <span>Read More</span>
+                                <i class="fa-solid fa-arrow-right text-gold"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Open Modal and display full news
+        function openNews(encodedData) {
+            const data = JSON.parse(decodeURIComponent(encodedData));
+            const reader = document.getElementById('reader');
+            
+            // Set Header
+            document.getElementById('sourceInfo').innerText = data.author || "ಕರ್ನಾಟಕ ಟೈಮ್ಸ್";
+            
+            // Set Content
+            document.getElementById('readerContent').innerHTML = `
+                <h2 class="text-2xl md:text-3xl font-serif font-bold text-primary mb-4 leading-tight">${data.title}</h2>
+                <div class="text-xs text-gray-400 mb-6 font-bold tracking-widest uppercase">
+                    ${new Date(data.pubDate).toLocaleString()}
+                </div>
+                <img src="${data.image}" onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800'" class="w-full h-64 md:h-96 object-cover rounded-xl mb-8 shadow-sm">
+                
+                <div class="text-gray-700 leading-relaxed space-y-4 mb-10 text-sm md:text-base">
+                    ${data.description}
+                </div>
+                
+                <div class="border-t border-gray-100 pt-8 pb-4 text-center">
+                    <a href="${data.link}" target="_blank" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-gold text-white font-bold hover:bg-yellow-600 transition-colors shadow-lg shadow-gold/20">
+                        ಮೂಲ ಲೇಖನ ಓದಿ (Read Full Article) <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+                    </a>
+                </div>
+            `;
+            
+            reader.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        // Close Modal
+        function closeNews() {
+            document.getElementById('reader').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore background scrolling
+        }
+
+        // Initialize News Feed
+        document.addEventListener('DOMContentLoaded', fetchLiveNews);
+        setInterval(fetchLiveNews, 3600000); // 1-Hour Auto Refresh
+
+    </script>
+</body>
 </html>
